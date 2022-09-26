@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+# 在git commit之前进行拦截 执行下面的操作
+npm run lint
