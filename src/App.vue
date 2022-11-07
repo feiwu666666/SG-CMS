@@ -1,29 +1,25 @@
 <template>
-  <nav>
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <!-- el-config-provider 标签中的元素必须遵从configprovider -->
+  <el-config-provider :locale="locale">
+    <router-view></router-view>
+  </el-config-provider>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style lang="less"></style>
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { ElConfigProvider } from 'element-plus'
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+// 将elementPlus配置成中文
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+export default defineComponent({
+  components: {
+    ElConfigProvider
+  },
+  setup() {
+    return {
+      locale: zhCn
     }
   }
-}
-</style>
+})
+</script>
