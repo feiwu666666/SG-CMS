@@ -1,3 +1,10 @@
+/*
+ * @Author: Cyan_Breeze
+ * @Description: 语法检测
+ * @Date: 2022-09-26 12:36:54
+ * @LastEditTime: 2022-11-14 13:45:30
+ * @FilePath: \vue3-cms\.eslintrc.js
+ */
 module.exports = {
   root: true,
   env: {

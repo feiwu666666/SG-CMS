@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-13 22:09:06
- * @LastEditTime: 2022-11-07 23:49:48
+ * @LastEditTime: 2022-11-08 20:12:19
  * @FilePath: \vue3-cms\src\components\page-search\src\page-search.vue
 -->
 <template>
@@ -17,10 +17,16 @@
             type="primary"
             :icon="Refresh"
             round
-            @click="handleClickReset"
+            @click="handleResetClick"
             >重置</el-button
           >
-          <el-button type="primary" :icon="Search" round>搜索</el-button>
+          <el-button
+            type="primary"
+            :icon="Search"
+            round
+            @click="handleQueryClick"
+            >搜索</el-button
+          >
         </div>
       </template>
     </my-form>
@@ -43,7 +49,8 @@ export default defineComponent({
   components: {
     MyForm
   },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(props, { emit }) {
     // 1. 初始化搜索框的各种参数
     const formItems = props.searchConfig?.formItems ?? []
     const OriginFormData: any = {}
@@ -51,13 +58,21 @@ export default defineComponent({
       OriginFormData[item.field] = ''
     }
     const formData = ref(OriginFormData)
-    const handleClickReset = () => {
-      console.log(formData.value)
-      formData.value = OriginFormData
-      console.log(formData.value)
+
+    const handleResetClick = () => {
+      for (const key in OriginFormData) {
+        formData.value[key] = OriginFormData[key]
+      }
+      emit('resetBtnClick')
+    }
+
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
+      console.log('clickSearch')
     }
     return {
-      handleClickReset,
+      handleQueryClick,
+      handleResetClick,
       formData,
       Search,
       Refresh

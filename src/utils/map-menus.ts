@@ -1,7 +1,15 @@
+/*
+ * @Author: Cyan_Breeze
+ * @Description:一些映射menus中数据的函数
+ * @Date: 2022-10-11 10:51:29
+ * @LastEditTime: 2022-11-14 19:35:40
+ * @FilePath: \vue3-cms\src\utils\map-menus.ts
+ */
 import { myBreadCrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
 
 let firstMenu: any = null
+// 将菜单映射进路由中
 export default function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
   //1. 默认加载所有的路由 allRoutes中存储了所有权限的菜单路由
@@ -55,10 +63,26 @@ export function pathMapToMenu(
     }
   }
 }
-
+// 通过当前路径  拼接出面包屑
 export function pathMapToBread(userMenus: any[], currentPath: string) {
   const breadCrumbs: myBreadCrumb[] = []
   pathMapToMenu(userMenus, currentPath, breadCrumbs)
   return breadCrumbs
+}
+// 通过menus 映射出用户的按钮权限
+export function mapMenusToPermission(userMenus: any[]) {
+  const permission: string[] = []
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permission.push(menu.permission)
+      }
+    }
+  }
+  _recurseGetPermission(userMenus)
+
+  return permission
 }
 export { firstMenu }

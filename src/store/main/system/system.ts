@@ -2,13 +2,13 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-13 22:35:44
- * @LastEditTime: 2022-11-07 23:03:34
+ * @LastEditTime: 2022-11-15 14:05:27
  * @FilePath: \vue3-cms\src\store\main\system\system.ts
  */
 import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
-import { getPageListData } from '@/service/main/system/system'
+import { deletePageData, getPageListData } from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -16,7 +16,11 @@ const systemModule: Module<ISystemState, IRootState> = {
     roleList: [],
     roleCount: 0,
     usersList: [],
-    usersCount: 0
+    usersCount: 0,
+    goodsList: [],
+    goodsCount: 0,
+    menuList: [],
+    menuCount: 0
   },
   mutations: {
     changeUsersList(state, usersList: any[]) {
@@ -30,6 +34,18 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeRoleCount(state, roleCount: number) {
       state.roleCount = roleCount
+    },
+    changeGoodsList(state, goodsList: any[]) {
+      state.goodsList = goodsList
+    },
+    changeGoodsCount(state, goodsCount: number) {
+      state.goodsCount = goodsCount
+    },
+    changeMenuList(state, menuList: any[]) {
+      state.menuList = menuList
+    },
+    changeMenuCount(state, menuCount: number) {
+      state.menuCount = menuCount
     }
   },
   getters: {
@@ -42,6 +58,11 @@ const systemModule: Module<ISystemState, IRootState> = {
         //   case 'role':
         //     return state.roleList
         // }
+      }
+    },
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
       }
     }
   },
@@ -80,6 +101,21 @@ const systemModule: Module<ISystemState, IRootState> = {
       //     commit(`changeRoleCount`, totalCount)
       //     break
       // }
+    },
+    async deletePageDataAction({ dispatch }, payload: any) {
+      // 1. 拼接delete函数的url
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      // 2. 调用delete的网络请求
+      await deletePageData(pageUrl)
+      // 3. 重新请求pageList数据
+      dispatch('getPageListAction', {
+        pageName: pageName,
+        queryInfo: {
+          offset: 0,
+          size: 5
+        }
+      })
     }
   }
 }

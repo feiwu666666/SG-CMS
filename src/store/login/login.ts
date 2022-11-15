@@ -1,3 +1,10 @@
+/*
+ * @Author: Cyan_Breeze
+ * @Description:登陆相关模块的store
+ * @Date: 2022-10-07 11:13:20
+ * @LastEditTime: 2022-11-14 22:33:42
+ * @FilePath: \vue3-cms\src\store\login\login.ts
+ */
 import { Module } from 'vuex'
 import { IRootState } from '../types'
 import { ILoginState } from './types'
@@ -9,14 +16,15 @@ import {
 import { IAccount } from '@/service/login/types'
 import localCache from '@/utils/cache'
 import router from '@/router'
-import mapMenusToRoutes from '@/utils/map-menus'
+import mapMenusToRoutes, { mapMenusToPermission } from '@/utils/map-menus'
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state: {
     token: '',
     userInfo: {},
-    userMenus: {}
+    userMenus: {},
+    permissions: []
   },
   // 调用actions中的方法需要用store.dispatch("函数名",参数)调用  mutations方法需要使用store.commit("函数名",参数)调用
   actions: {
@@ -76,6 +84,9 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+      // 用menus映射出user的permission按钮权限
+      const permission = mapMenusToPermission(userMenus)
+      state.permissions = permission
     }
   },
   getters: {},

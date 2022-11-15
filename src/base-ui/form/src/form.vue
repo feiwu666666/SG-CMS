@@ -88,16 +88,16 @@ export default defineComponent({
   setup(props, { emit }) {
     // 拷贝一份modelValue给formData
     const formData = ref({ ...props.modelValue })
+
+    // watch(
+    //   // 监听modelValue的值，如果在父组件发生变化的话要随时更新数据
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     formData.value = { ...newValue }
+    //   }
+    // )
     // 监听formData  如果传入了新的newValue  就向上传递updata:modelValue指令,将newValue赋值给modelValue
     //deep是深度检测  即检测formData数组的每一项
-
-    watch(
-      // 监听modelValue的值，如果在父组件发生变化的话要随时更新数据
-      () => props.modelValue,
-      (newValue) => {
-        formData.value = { ...newValue }
-      }
-    )
     watch(
       formData,
       (newValue) => {
