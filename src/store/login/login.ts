@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:登陆相关模块的store
  * @Date: 2022-10-07 11:13:20
- * @LastEditTime: 2022-11-14 22:33:42
+ * @LastEditTime: 2022-11-16 10:44:53
  * @FilePath: \vue3-cms\src\store\login\login.ts
  */
 import { Module } from 'vuex'
@@ -48,6 +48,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       router.push('/main')
       console.log('登陆成功')
     },
+    // 获取本地缓存
     loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')
       if (token) {

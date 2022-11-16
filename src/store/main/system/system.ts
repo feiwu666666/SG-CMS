@@ -2,13 +2,18 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-13 22:35:44
- * @LastEditTime: 2022-11-15 14:05:27
+ * @LastEditTime: 2022-11-16 11:25:55
  * @FilePath: \vue3-cms\src\store\main\system\system.ts
  */
 import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
-import { deletePageData, getPageListData } from '@/service/main/system/system'
+import {
+  deletePageData,
+  getPageListData,
+  createPageData,
+  editPageData
+} from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -22,6 +27,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     menuList: [],
     menuCount: 0
   },
+  // mutations中的函数需要用commit调用
   mutations: {
     changeUsersList(state, usersList: any[]) {
       state.usersList = usersList
@@ -66,6 +72,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       }
     }
   },
+  // 调用action 用dispatch
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
@@ -109,6 +116,33 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 2. 调用delete的网络请求
       await deletePageData(pageUrl)
       // 3. 重新请求pageList数据
+      dispatch('getPageListAction', {
+        pageName: pageName,
+        queryInfo: {
+          offset: 0,
+          size: 5
+        }
+      })
+    },
+    async createPageDataAction({ dispatch }, payload: any) {
+      const { pageName, newData } = payload
+      // 1. 拼接url
+      const url = `/${pageName}`
+      // 2. 发送网络请求
+      await createPageData(url, newData)
+      // 3.重新获取pageList数据
+      dispatch('getPageListAction', {
+        pageName: pageName,
+        queryInfo: {
+          offset: 0,
+          size: 5
+        }
+      })
+    },
+    async editPageDataAction({ dispatch }, payload: any) {
+      const { pageName, editData, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      await editPageData(pageUrl, editData)
       dispatch('getPageListAction', {
         pageName: pageName,
         queryInfo: {

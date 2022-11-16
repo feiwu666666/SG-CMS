@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:每一个子页面的内容页面
  * @Date: 2022-11-06 23:52:58
- * @LastEditTime: 2022-11-15 17:41:47
+ * @LastEditTime: 2022-11-16 11:28:07
  * @FilePath: \vue3-cms\src\components\page-content\src\page-content.vue
 -->
 <template>
@@ -84,7 +84,7 @@
 import { useStore } from '@/store'
 import { defineComponent, computed, ref } from 'vue'
 import { Edit, Delete, Plus } from '@element-plus/icons-vue'
-import { usePermission } from '@/hooks/use-permission'
+import { usePermission } from '@/hooks/use-page-permission'
 
 import myTable from '@/base-ui/table'
 
@@ -151,7 +151,6 @@ export default defineComponent({
     })
     // 增删改
     const handleClickDelete = (item: any) => {
-      console.log(item)
       store.dispatch('systemModule/deletePageDataAction', {
         pageName: props.pageName,
         id: item.id

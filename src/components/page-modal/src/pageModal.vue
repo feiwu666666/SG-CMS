@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:对话框页面
  * @Date: 2022-11-15 16:55:26
- * @LastEditTime: 2022-11-15 18:10:08
+ * @LastEditTime: 2022-11-16 11:25:57
  * @FilePath: \vue3-cms\src\components\page-modal\src\pageModal.vue
 -->
 <template>
@@ -18,7 +18,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">
+          <el-button type="primary" @click="handleClickConfirm">
             确定
           </el-button>
         </span>
@@ -29,6 +29,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import MyForm from '@/base-ui/form'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   props: {
@@ -39,6 +40,10 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -47,6 +52,26 @@ export default defineComponent({
   setup(props) {
     const centerDialogVisible = ref(false)
     const formData = ref<any>({})
+    const store = useStore()
+    // 点击对话框中的确定后的逻辑
+    const handleClickConfirm = () => {
+      centerDialogVisible.value = false
+
+      if (Object.keys(props.defaultInfo).length) {
+        // 编辑
+        store.dispatch('systemModule/editPageDataAction', {
+          pageName: props.pageName,
+          editData: { ...formData.value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        // 新建
+        store.dispatch('systemModule/createPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...formData.value }
+        })
+      }
+    }
     // 监控defaultInfo 当点击编辑， 自动将改行的数据填充到表单中
     watch(
       () => props.defaultInfo,
@@ -57,6 +82,7 @@ export default defineComponent({
       }
     )
     return {
+      handleClickConfirm,
       centerDialogVisible,
       formData
     }
