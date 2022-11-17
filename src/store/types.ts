@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-07 11:07:46
- * @LastEditTime: 2022-11-15 21:57:24
+ * @LastEditTime: 2022-11-16 17:58:12
  * @FilePath: \vue3-cms\src\store\types.ts
  */
 import { ILoginState } from './login/types'
@@ -13,6 +13,7 @@ export interface IRootState {
   age: number
   departmentList: any[]
   roleList: any[]
+  menuList: any[]
 }
 
 export interface IRootWithModule {

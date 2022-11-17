@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-04 18:35:03
- * @LastEditTime: 2022-11-08 15:29:31
+ * @LastEditTime: 2022-11-16 16:22:52
  * @FilePath: \vue3-cms\src\views\login\components\login-account.vue
 -->
 <template>
@@ -46,7 +46,6 @@ export default defineComponent({
     // 与form绑定得到form变量  然后获取form验证的结果
 
     const formRef = ref<InstanceType<typeof ElForm>>()
-    console.log(formRef.value)
 
     const loginAction = (isKeepPassword: boolean) => {
       formRef.value?.validate((valid) => {

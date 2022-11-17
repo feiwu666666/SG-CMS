@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:对话框页面
  * @Date: 2022-11-15 16:55:26
- * @LastEditTime: 2022-11-16 11:25:57
+ * @LastEditTime: 2022-11-16 21:30:56
  * @FilePath: \vue3-cms\src\components\page-modal\src\pageModal.vue
 -->
 <template>
@@ -15,6 +15,7 @@
       destroy-on-close
     >
       <my-form v-bind="modalConfig" v-model="formData"></my-form>
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -33,6 +34,11 @@ import { useStore } from 'vuex'
 
 export default defineComponent({
   props: {
+    // 从父组件中传来的另外的参数  用于组件自定义化
+    otherInfo: {
+      type: Object,
+      default: () => ({})
+    },
     modalConfig: {
       type: Object,
       required: true
@@ -59,16 +65,20 @@ export default defineComponent({
 
       if (Object.keys(props.defaultInfo).length) {
         // 编辑
+        console.log(props.otherInfo)
+
         store.dispatch('systemModule/editPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formData.value },
+          editData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         // 新建
+        console.log(props.otherInfo)
+
         store.dispatch('systemModule/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       }
     }

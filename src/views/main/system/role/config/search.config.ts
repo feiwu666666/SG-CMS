@@ -15,23 +15,13 @@ export const searchConfig: IForm = {
       placeholder: '请输入角色名'
     },
     {
-      field: 'sport',
-      type: 'select',
-      label: '爱好',
-      placeholder: '请选择爱好',
-      options: [
-        {
-          title: '篮球',
-          value: 'basketball'
-        },
-        {
-          title: '足球',
-          value: 'football'
-        }
-      ]
+      field: 'intro',
+      type: 'input',
+      label: '角色介绍',
+      placeholder: '请输入角色介绍'
     },
     {
-      field: 'date',
+      field: 'creatAt',
       type: 'datepicker',
       label: '创建日期',
       otherOptions: {

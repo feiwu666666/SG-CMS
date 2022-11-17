@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:一些映射menus中数据的函数
  * @Date: 2022-10-11 10:51:29
- * @LastEditTime: 2022-11-14 19:35:40
+ * @LastEditTime: 2022-11-16 20:48:35
  * @FilePath: \vue3-cms\src\utils\map-menus.ts
  */
 import { myBreadCrumb } from '@/base-ui/breadcrumb'
@@ -84,5 +84,19 @@ export function mapMenusToPermission(userMenus: any[]) {
   _recurseGetPermission(userMenus)
 
   return permission
+}
+export function mapMenusToLeafKeys(userMenus: any[]) {
+  const leafKeys: number[] = []
+  const _recurseGetLeafKeys = (menus: any[]) => {
+    for (const item of menus) {
+      if (item.children) {
+        _recurseGetLeafKeys(item.children)
+      } else {
+        leafKeys.push(item.id)
+      }
+    }
+  }
+  _recurseGetLeafKeys(userMenus)
+  return leafKeys
 }
 export { firstMenu }

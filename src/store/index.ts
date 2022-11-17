@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description: 基础的store
  * @Date: 2022-09-26 12:36:54
- * @LastEditTime: 2022-11-15 23:05:40
+ * @LastEditTime: 2022-11-16 18:46:52
  * @FilePath: \vue3-cms\src\store\index.ts
  */
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
@@ -15,7 +15,8 @@ const store = createStore<IRootState>({
     name: '',
     age: 0,
     departmentList: [],
-    roleList: []
+    roleList: [],
+    menuList: []
   },
   getters: {},
   mutations: {
@@ -24,9 +25,13 @@ const store = createStore<IRootState>({
     },
     changeRoleList(state, roleList: any[]) {
       state.roleList = roleList
+    },
+    changeMenuList(state, menuList: any[]) {
+      state.menuList = menuList
     }
   },
   actions: {
+    // 初始化department和role数据
     async getInitialDataAction({ commit }) {
       const department = await getPageListData('/department/list', {
         offset: 0,
@@ -38,8 +43,14 @@ const store = createStore<IRootState>({
         size: 1000
       })
       const { list: roleList } = role.data
+      const menu = await getPageListData('/menu/list', {
+        offset: 0,
+        size: 10000
+      })
+      const { list: menuList } = menu.data
       commit('changeDepartmentList', departmentList)
       commit('changeRoleList', roleList)
+      commit('changeMenuList', menuList)
     }
   },
   modules: { loginModule, systemModule }
@@ -47,7 +58,7 @@ const store = createStore<IRootState>({
 // 加载本地资源
 export function setupStore() {
   store.dispatch('loginModule/loadLocalLogin')
-  store.dispatch('getInitialDataAction')
+  // store.dispatch('getInitialDataAction')
 }
 
 // 自定义封装的useStore()函数  可以规定函数的返回值

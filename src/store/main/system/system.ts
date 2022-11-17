@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:
  * @Date: 2022-10-13 22:35:44
- * @LastEditTime: 2022-11-16 11:25:55
+ * @LastEditTime: 2022-11-16 21:01:52
  * @FilePath: \vue3-cms\src\store\main\system\system.ts
  */
 import { IRootState } from '@/store/types'
@@ -129,6 +129,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 1. 拼接url
       const url = `/${pageName}`
       // 2. 发送网络请求
+      console.log(newData)
       await createPageData(url, newData)
       // 3.重新获取pageList数据
       dispatch('getPageListAction', {
@@ -142,6 +143,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     async editPageDataAction({ dispatch }, payload: any) {
       const { pageName, editData, id } = payload
       const pageUrl = `/${pageName}/${id}`
+      console.log(editData)
       await editPageData(pageUrl, editData)
       dispatch('getPageListAction', {
         pageName: pageName,
