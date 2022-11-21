@@ -2,7 +2,7 @@
  * @Author: Cyan_Breeze
  * @Description:登陆相关模块的store
  * @Date: 2022-10-07 11:13:20
- * @LastEditTime: 2022-11-17 10:32:00
+ * @LastEditTime: 2022-11-17 12:31:46
  * @FilePath: \vue3-cms\src\store\login\login.ts
  */
 import { Module } from 'vuex'
@@ -39,7 +39,6 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 获取到了token时直接进行department和role的初始化  防止异步函数导致出现数据未加载情况
       // 2.获取user信息
-      console.log(id)
       const userInfoResult = await requestUserInfoById(id)
       commit('changeUserInfo', userInfoResult.data)
       localCache.setCache('userInfo', userInfoResult.data)
@@ -55,7 +54,6 @@ const loginModule: Module<ILoginState, IRootState> = {
         userInfoResult.data.role.id
       )
       const userMenus = userMenuResult.data
-      console.log('userMenus' + userMenus)
       commit('changeUserMenu', userMenus)
       localCache.setCache('userMenus', userMenus)
       router.push('/main')
@@ -90,7 +88,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userInfo = userInfo
     },
     changeUserMenu(state, userMenus: any[]) {
-      console.log(userMenus)
       for (const menu of userMenus) {
         menu.icon = menu.icon.replace('el-icon-', '')
       }

@@ -2,14 +2,16 @@
  * @Author: Cyan_Breeze
  * @Description: 基础的store
  * @Date: 2022-09-26 12:36:54
- * @LastEditTime: 2022-11-16 18:46:52
+ * @LastEditTime: 2022-11-17 12:33:25
  * @FilePath: \vue3-cms\src\store\index.ts
  */
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import { IRootState, IStoreType } from './types'
+import { getPageListData } from '@/service/main/system/system'
+
 import loginModule from './login/login'
 import systemModule from './main/system/system'
-import { getPageListData } from '@/service/main/system/system'
+import dashboardModule from './analysis/dashboard'
 const store = createStore<IRootState>({
   state: {
     name: '',
@@ -53,7 +55,7 @@ const store = createStore<IRootState>({
       commit('changeMenuList', menuList)
     }
   },
-  modules: { loginModule, systemModule }
+  modules: { loginModule, systemModule, dashboardModule }
 })
 // 加载本地资源
 export function setupStore() {
